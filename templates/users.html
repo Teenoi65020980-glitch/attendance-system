@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <title>จัดการผู้ใช้</title>
+    <style>
+        body { font-family: "Segoe UI", Tahoma, sans-serif; background: linear-gradient(to right, #74b9ff, #dfe6e9); margin:0; }
+        header { background:#2c3e50; color:white; padding:20px; text-align:center; }
+        .container { max-width:800px; margin:30px auto; padding:20px; }
+        .card { background:white; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.1); padding:20px; }
+        table { width:100%; border-collapse:collapse; margin-top:10px; }
+        th, td { border:1px solid #b2bec3; padding:10px; text-align:center; }
+        th { background:#ecf0f1; }
+        button { background:#0984e3; color:white; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; }
+        button:hover { background:#74b9ff; }
+    </style>
+</head>
+<body>
+    <header><h1>จัดการผู้ใช้</h1></header>
+    <div class="container">
+        <div class="card">
+            <table>
+                <thead>
+                    <tr><th>ชื่อผู้ใช้</th><th>สิทธิ์</th><th>แก้ไข</th><th>ลบ</th></tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                    <tr>
+                        <td>{{ user[1] }}</td>
+                        <td>{{ user[2] }}</td>
+                        <td>
+                            <form method="POST" action="/update_role/{{ user[0] }}">
+                                <select name="role">
+                                    <option value="teacher" {% if user[2]=="teacher" %}selected{% endif %}>ครู</option>
+                                    <option value="admin" {% if user[2]=="admin" %}selected{% endif %}>ผู้ดูแลระบบ</option>
+                                </select>
+                                <button type="submit">บันทึก</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form method="POST" action="/delete_user/{{ user[0] }}">
+                                <button type="submit" onclick="return confirm('คุณแน่ใจว่าจะลบผู้ใช้นี้?')">ลบ</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
