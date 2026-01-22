@@ -208,6 +208,47 @@ def delete_user(user_id):
     conn.close()
     return redirect("/users")
 
+# ------------------ Init DB ------------------
+@app.route("/init")
+def init_db():
+    conn = get_db()
+    c = conn.cursor()
+
+    # สร้างตาราง users
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL
+    )
+    """)
+
+    # สร้างตาราง students
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS students (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        birthdate TEXT,
+        class TEXT,
+        parent_name TEXT
+    )
+    """)
+    
+    # สร้างตาราง attendance
+    c.execute("""
+    CREATE TABLE IF NOT EXISTS attendance (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id INTEGER,
+        status TEXT,
+        FOREIGN KEY(student_id) REFERENCES students(id)
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+    return "Database initialized!"
+
 # ------------------ Run ------------------
 if __name__ == "__main__":
     app.run(debug=True)
