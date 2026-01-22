@@ -214,7 +214,6 @@ def init_db():
     conn = get_db()
     c = conn.cursor()
 
-    # สร้างตาราง users
     c.execute("""
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -224,7 +223,6 @@ def init_db():
     )
     """)
 
-    # สร้างตาราง students
     c.execute("""
     CREATE TABLE IF NOT EXISTS students (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -234,8 +232,7 @@ def init_db():
         parent_name TEXT
     )
     """)
-    
-    # สร้างตาราง attendance
+
     c.execute("""
     CREATE TABLE IF NOT EXISTS attendance (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
